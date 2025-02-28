@@ -1,4 +1,4 @@
-package com.victor.inventoryManager.controller.dto;
+package com.victor.inventoryManager.dto;
 
 import java.util.List;
 
