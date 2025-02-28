@@ -1,4 +1,4 @@
-package com.victor.inventoryManager.controller.dto;
+package com.victor.inventoryManager.dto;
 
 public record PaginationResponse(Integer page,
                                  Integer pageSize,
