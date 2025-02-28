@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: db_inventory-manager
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: inventorymanager-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+volumes:
+  postgres_data:
+
+networks:
+  mynetwork:
+    driver: bridge
