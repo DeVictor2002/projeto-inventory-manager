@@ -25,7 +25,7 @@ public class ProductController {
 
         ProductDto productDto = productService.createProduct(createProductDto);
 
-        URI location = URI.create("/api/v1/prodcts/" + productDto.id());
+        URI location = URI.create("/api/v1/products/" + productDto.id());
 
         return ResponseEntity.created(location).body(productDto);
     }
