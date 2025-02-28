@@ -1,17 +1,17 @@
 package com.victor.inventoryManager.controller;
 
-import com.victor.inventoryManager.controller.dto.ApiResponse;
-import com.victor.inventoryManager.controller.dto.PaginationResponse;
-import com.victor.inventoryManager.entity.Product;
+import com.victor.inventoryManager.dto.ApiResponse;
+import com.victor.inventoryManager.dto.CreateProductDto;
+import com.victor.inventoryManager.dto.PaginationResponse;
+import com.victor.inventoryManager.dto.ProductDto;
 import com.victor.inventoryManager.service.ProductService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("api/v1/product")
 public class ProductController {
 
     private final ProductService productService;
@@ -20,9 +20,19 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @PostMapping
+    public ResponseEntity<ProductDto> createProduct(@RequestBody CreateProductDto createProductDto) {
+
+        ProductDto productDto = productService.createProduct(createProductDto);
+
+        URI location = URI.create("/api/v1/prodcts/" + productDto.id());
+
+        return ResponseEntity.created(location).body(productDto);
+    }
+
     @GetMapping
-    public ResponseEntity<ApiResponse<Product>> listAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                 @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<ApiResponse<ProductDto>> listAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                           @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         var pageResponse = productService.findAll(page, pageSize);
 
         return ResponseEntity.ok(new ApiResponse<>(
