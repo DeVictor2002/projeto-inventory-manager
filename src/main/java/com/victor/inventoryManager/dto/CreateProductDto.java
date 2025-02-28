@@ -5,5 +5,6 @@ import java.math.BigDecimal;
 public record CreateProductDto(String name,
                                String description,
                                Integer quantity,
-                               BigDecimal price) {
+                               BigDecimal price,
+                               Long categoryId) {
 }
