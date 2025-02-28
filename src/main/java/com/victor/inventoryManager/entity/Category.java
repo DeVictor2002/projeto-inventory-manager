@@ -10,6 +10,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
     public Category() {
@@ -22,6 +23,8 @@ public class Category {
     public void setId(Long id) {
         this.id = id;
     }
+
+
 
     public String getName() {
         return name;
