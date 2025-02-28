@@ -24,7 +24,7 @@ public class StockMovement {
     @Column(name = "type", nullable = false)
     private MovimentType type;
 
-    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEAFULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
 
     public StockMovement() {
