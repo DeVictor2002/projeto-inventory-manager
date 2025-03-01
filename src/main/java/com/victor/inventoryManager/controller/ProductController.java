@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 
 @RestController
-@RequestMapping("api/v1/product")
+@RequestMapping("/api/v1/product")
 public class ProductController {
 
     private final ProductService productService;
@@ -25,7 +25,7 @@ public class ProductController {
 
         ProductDto productDto = productService.createProduct(createProductDto);
 
-        URI location = URI.create("/api/v1/products/" + productDto.id());
+        URI location = URI.create("/api/v1/product/" + productDto.id());
 
         return ResponseEntity.created(location).body(productDto);
     }
@@ -37,7 +37,8 @@ public class ProductController {
 
         return ResponseEntity.ok(new ApiResponse<>(
                 pageResponse.getContent(),
-                new PaginationResponse(pageResponse.getNumber(),
+                new PaginationResponse(
+                        pageResponse.getNumber(),
                         pageResponse.getSize(),
                         pageResponse.getTotalElements(),
                         pageResponse.getTotalPages())

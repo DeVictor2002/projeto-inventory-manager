@@ -37,6 +37,14 @@ public class Product {
         }
     }
 
+    public Product(String name, String description, Integer quantity, BigDecimal price, Category category) {
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+        this.price = price;
+        this.category = category;
+    }
+
     public Product() {
     }
 

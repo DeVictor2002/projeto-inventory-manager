@@ -43,12 +43,13 @@ public class ProductService {
         Category category = categoryRepository.findById(createProductDto.categoryId())
                 .orElseThrow(() -> new CategoryNotFoundException("Categoria não encontrada"));
 
-        Product product = new Product();
-        product.setName(createProductDto.name());
-        product.setDescription(createProductDto.description());
-        product.setQuantity(createProductDto.quantity());
-        product.setPrice(createProductDto.price());
-        product.setCategory(category);
+        Product product = new Product(
+                createProductDto.name(),
+                createProductDto.description(),
+                createProductDto.quantity(),
+                createProductDto.price(),
+                category
+        );
 
         Product productSaved = productRepository.save(product);
 
