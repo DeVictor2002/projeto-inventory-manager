@@ -5,6 +5,7 @@ import com.victor.inventoryManager.dto.ProductDto;
 import com.victor.inventoryManager.entity.Category;
 import com.victor.inventoryManager.entity.Product;
 import com.victor.inventoryManager.exception.CategoryNotFoundException;
+import com.victor.inventoryManager.exception.ProductNotFoundException;
 import com.victor.inventoryManager.repository.CategoryRepository;
 import com.victor.inventoryManager.repository.ProductRepository;
 import org.springframework.data.domain.Page;
@@ -59,5 +60,18 @@ public class ProductService {
                 productSaved.getQuantity(),
                 productSaved.getPrice(),
                 productSaved.getCategory().getName());
+    }
+
+    public ProductDto findProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Produto não encontrado"));
+        return new ProductDto(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getQuantity(),
+                product.getPrice(),
+                product.getCategory() != null ? product.getCategory().getName() : null
+        );
     }
 }

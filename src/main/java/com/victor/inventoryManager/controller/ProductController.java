@@ -1,10 +1,9 @@
 package com.victor.inventoryManager.controller;
 
-import com.victor.inventoryManager.dto.ApiResponse;
-import com.victor.inventoryManager.dto.CreateProductDto;
-import com.victor.inventoryManager.dto.PaginationResponse;
-import com.victor.inventoryManager.dto.ProductDto;
+import com.victor.inventoryManager.dto.*;
+import com.victor.inventoryManager.exception.ProductNotFoundException;
 import com.victor.inventoryManager.service.ProductService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +42,17 @@ public class ProductController {
                         pageResponse.getTotalElements(),
                         pageResponse.getTotalPages())
         ));
+    }
+
+    @GetMapping(path = "/{productId}")
+    public ResponseEntity<?> getProductById(@PathVariable(value = "productId") Long productId) {
+        try {
+            ProductDto productDto = productService.findProductById(productId);
+            return ResponseEntity.ok(productDto);
+        } catch (ProductNotFoundException ex) {
+            ErrorResponseDto errorResponse = new ErrorResponseDto("Produto não encontrado",
+                    HttpStatus.NOT_FOUND.value());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
     }
 }
