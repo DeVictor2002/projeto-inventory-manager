@@ -2,6 +2,7 @@ package com.victor.inventoryManager.service;
 
 import com.victor.inventoryManager.dto.CreateProductDto;
 import com.victor.inventoryManager.dto.ProductDto;
+import com.victor.inventoryManager.dto.UpdateProductDto;
 import com.victor.inventoryManager.entity.Category;
 import com.victor.inventoryManager.entity.Product;
 import com.victor.inventoryManager.exception.CategoryNotFoundException;
@@ -79,5 +80,34 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Produto não encontrado"));
         productRepository.delete(product);
+    }
+
+    public ProductDto updateProduct(Long productId, UpdateProductDto updateProductDto) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new ProductNotFoundException("Produto não encontrado com o id: " + productId));
+
+        Category category = null;
+        if (updateProductDto.categoryId() != null) {
+            category = categoryRepository.findById(updateProductDto.categoryId())
+                    .orElseThrow(() -> new CategoryNotFoundException("Categoria não encontrada"));
+        }
+
+        product.setName(updateProductDto.name());
+        product.setDescription(updateProductDto.description());
+        product.setQuantity(updateProductDto.quantity());
+        product.setPrice(updateProductDto.price());
+        product.setCategory(category);
+
+        Product productSaved = productRepository.save(product);
+
+        return new ProductDto(
+                productSaved.getId(),
+                productSaved.getName(),
+                productSaved.getDescription(),
+                productSaved.getQuantity(),
+                productSaved.getPrice(),
+                productSaved.getCategory() != null ? productSaved.getCategory().getName() : null
+        );
     }
 }

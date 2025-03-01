@@ -67,4 +67,19 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
+
+    @PutMapping(path = "/{productId}")
+    public ResponseEntity<?> updateProduct(@PathVariable(value = "productId") Long productId,
+                                           @RequestBody UpdateProductDto updateProductDto) {
+        try {
+
+            ProductDto updatedProductDto = productService.updateProduct(productId, updateProductDto);
+            return ResponseEntity.ok(updatedProductDto);
+
+        } catch (ProductNotFoundException ex) {
+            ErrorResponseDto errorResponse =
+                    new ErrorResponseDto(ex.getMessage(), HttpStatus.NOT_FOUND.value());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
 }
