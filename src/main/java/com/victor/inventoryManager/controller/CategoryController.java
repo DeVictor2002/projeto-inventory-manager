@@ -1,13 +1,12 @@
 package com.victor.inventoryManager.controller;
 
+import com.victor.inventoryManager.dto.ApiResponse;
 import com.victor.inventoryManager.dto.CategoryDto;
 import com.victor.inventoryManager.dto.CreateCategoryDto;
+import com.victor.inventoryManager.dto.PaginationResponse;
 import com.victor.inventoryManager.service.CategoryService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -26,5 +25,21 @@ public class CategoryController {
         CategoryDto categoryDto = categoryService.createCategory(createCategoryDto);
         URI location = URI.create("/api/v1/category/" + categoryDto.id());
         return ResponseEntity.created(location).body(categoryDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<CategoryDto>> listAll(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        var pageResponse = categoryService.findAll(page, pageSize);
+
+        return ResponseEntity.ok(new ApiResponse<>(
+                pageResponse.getContent(),
+                new PaginationResponse(
+                        pageResponse.getNumber(),
+                        pageResponse.getSize(),
+                        pageResponse.getTotalElements(),
+                        pageResponse.getTotalPages()
+                )
+        ));
     }
 }
