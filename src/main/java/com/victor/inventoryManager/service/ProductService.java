@@ -74,4 +74,10 @@ public class ProductService {
                 product.getCategory() != null ? product.getCategory().getName() : null
         );
     }
+
+    public void deleteProduct(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException("Produto não encontrado"));
+        productRepository.delete(product);
+    }
 }

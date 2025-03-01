@@ -50,7 +50,19 @@ public class ProductController {
             ProductDto productDto = productService.findProductById(productId);
             return ResponseEntity.ok(productDto);
         } catch (ProductNotFoundException ex) {
-            ErrorResponseDto errorResponse = new ErrorResponseDto("Produto não encontrado",
+            ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage(),
+                    HttpStatus.NOT_FOUND.value());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
+
+    @DeleteMapping(path = "/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable(value = "productId") Long productId) {
+        try {
+            productService.deleteProduct(productId);
+            return ResponseEntity.noContent().build();
+        } catch (ProductNotFoundException ex) {
+            ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage(),
                     HttpStatus.NOT_FOUND.value());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
