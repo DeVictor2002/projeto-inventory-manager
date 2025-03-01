@@ -1,0 +1,26 @@
+meta {
+  name: List Categories
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:8080/api/v1/category?page=0&pageSize=1
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 0
+  pageSize: 1
+}
+
+body:json {
+  {
+    "name": "Camisa Polo",
+    "description": "Camisa Polo 100% algodão",
+    "quantity": 50,
+    "price": "79.90",
+    "categoryId": 1
+  }
+}
