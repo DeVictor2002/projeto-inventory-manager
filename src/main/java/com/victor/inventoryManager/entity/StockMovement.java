@@ -1,6 +1,6 @@
 package com.victor.inventoryManager.entity;
 
-import com.victor.inventoryManager.entity.enums.MovimentType;
+import com.victor.inventoryManager.entity.enums.MovementType;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -22,9 +22,9 @@ public class StockMovement {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private MovimentType type;
+    private MovementType type;
 
-    @Column(name = "created_at", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     public StockMovement() {
@@ -54,11 +54,11 @@ public class StockMovement {
         this.quantity = quantity;
     }
 
-    public MovimentType getType() {
+    public MovementType getType() {
         return type;
     }
 
-    public void setType(MovimentType type) {
+    public void setType(MovementType type) {
         this.type = type;
     }
 
@@ -68,5 +68,10 @@ public class StockMovement {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 }
