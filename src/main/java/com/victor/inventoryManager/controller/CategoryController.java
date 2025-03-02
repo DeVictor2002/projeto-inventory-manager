@@ -65,4 +65,19 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
+
+    @PutMapping("/{categoryId}")
+    public ResponseEntity<?> updateCategory(@PathVariable(value = "categoryId") Long categoryId,
+                                            @RequestBody UpdateCategoryDto updateCategoryDto) {
+
+        try {
+            CategoryDto categoryDto = categoryService.updateCategory(categoryId, updateCategoryDto);
+
+            return ResponseEntity.ok(categoryDto);
+        } catch (CategoryNotFoundException ex) {
+            ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage(),
+                    HttpStatus.NOT_FOUND.value());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
 }

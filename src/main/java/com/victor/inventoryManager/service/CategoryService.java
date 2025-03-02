@@ -2,6 +2,8 @@ package com.victor.inventoryManager.service;
 
 import com.victor.inventoryManager.dto.CategoryDto;
 import com.victor.inventoryManager.dto.CreateCategoryDto;
+import com.victor.inventoryManager.dto.UpdateCategoryDto;
+import com.victor.inventoryManager.dto.UpdateProductDto;
 import com.victor.inventoryManager.entity.Category;
 import com.victor.inventoryManager.exception.CategoryNotFoundException;
 import com.victor.inventoryManager.repository.CategoryRepository;
@@ -52,5 +54,16 @@ public class CategoryService {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException("Categoria não encontrada"));
         categoryRepository.delete(category);
+    }
+
+    public CategoryDto updateCategory(Long id, UpdateCategoryDto updateCategoryDto) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() ->
+                        new CategoryNotFoundException("Categoria não encontrada com o id: " + id));
+
+        category.setName(updateCategoryDto.name());
+
+        Category categorySaved = categoryRepository.save(category);
+        return new CategoryDto(category.getId(), category.getName());
     }
 }
