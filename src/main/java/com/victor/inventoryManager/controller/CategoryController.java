@@ -53,4 +53,16 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
+
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<?> deleteCategory(@PathVariable(value = "categoryId") Long categoryId) {
+        try {
+            categoryService.deleteCategory(categoryId);
+            return ResponseEntity.noContent().build();
+        } catch (CategoryNotFoundException ex) {
+            ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage(),
+                    HttpStatus.NOT_FOUND.value());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
+    }
 }
