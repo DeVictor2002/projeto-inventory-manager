@@ -1,6 +1,8 @@
 package com.victor.inventoryManager.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 
@@ -25,7 +27,8 @@ public class Product {
     private BigDecimal price;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Category category;
 
     protected void onCreate() {
