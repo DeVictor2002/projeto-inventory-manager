@@ -1,5 +1,6 @@
 package com.victor.inventoryManager.entity;
 
+import com.victor.inventoryManager.exception.InsufficientStockException;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -30,15 +31,6 @@ public class Product {
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @OnDelete(action = OnDeleteAction.SET_NULL)
     private Category category;
-
-    protected void onCreate() {
-        if (price == null) {
-            price = BigDecimal.ZERO;
-        }
-        if (quantity == null) {
-            quantity = 0;
-        }
-    }
 
     public Product(String name, String description, Integer quantity, BigDecimal price, Category category) {
         this.name = name;
@@ -99,5 +91,21 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    protected void onCreate() {
+        if (price == null) {
+            price = BigDecimal.ZERO;
+        }
+        if (quantity == null) {
+            quantity = 0;
+        }
+    }
+
+    public void adjustStockQuantity(Integer quantityChange) {
+        this.quantity += quantityChange;
+        if (this.quantity < 0) {
+            throw new InsufficientStockException("Estoque insuficiente para concluir a operação do produto: " + this.name);
+        }
     }
 }
