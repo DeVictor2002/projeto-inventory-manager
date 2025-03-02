@@ -1,10 +1,9 @@
 package com.victor.inventoryManager.controller;
 
-import com.victor.inventoryManager.dto.ApiResponse;
-import com.victor.inventoryManager.dto.CategoryDto;
-import com.victor.inventoryManager.dto.CreateCategoryDto;
-import com.victor.inventoryManager.dto.PaginationResponse;
+import com.victor.inventoryManager.dto.*;
+import com.victor.inventoryManager.exception.CategoryNotFoundException;
 import com.victor.inventoryManager.service.CategoryService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,5 +40,17 @@ public class CategoryController {
                         pageResponse.getTotalPages()
                 )
         ));
+    }
+
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<?> getCategoryById(@PathVariable(value = "categoryId") Long id) {
+        try {
+            CategoryDto categoryDto = categoryService.findById(id);
+            return ResponseEntity.ok(categoryDto);
+        } catch (CategoryNotFoundException ex) {
+            ErrorResponseDto errorResponse = new ErrorResponseDto(ex.getMessage()
+            , HttpStatus.NOT_FOUND.value());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
     }
 }

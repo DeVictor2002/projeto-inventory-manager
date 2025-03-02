@@ -3,6 +3,7 @@ package com.victor.inventoryManager.service;
 import com.victor.inventoryManager.dto.CategoryDto;
 import com.victor.inventoryManager.dto.CreateCategoryDto;
 import com.victor.inventoryManager.entity.Category;
+import com.victor.inventoryManager.exception.CategoryNotFoundException;
 import com.victor.inventoryManager.repository.CategoryRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,5 +37,14 @@ public class CategoryService {
                 category.getId(),
                 category.getName()
         ));
+    }
+
+    public CategoryDto findById(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException("Categoria não encontrada"));
+        return new CategoryDto(
+                category.getId(),
+                category.getName()
+        );
     }
 }
